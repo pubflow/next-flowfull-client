@@ -1,0 +1,77 @@
+{
+  "app": {
+    "tagline": "A production-ready Pubflow client starter",
+    "connectedTo": "Connected to Flowless"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "login": "Sign in",
+    "logout": "Sign out"
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in securely. Two-factor verification appears automatically when your instance requires it.",
+    "sideTitle": "Your Flowless frontend, ready to control.",
+    "sideCopy": "Auth, sessions, protected pages, branding, dark mode, and production-ready client calls are already wired."
+  },
+  "register": {
+    "eyebrow": "Create account",
+    "title": "Start with your Flowless identity.",
+    "subtitle": "Create an account using the same branded auth experience your users will see.",
+    "success": "Account created successfully. Please sign in with your new credentials."
+  },
+  "passwordReset": {
+    "eyebrow": "Account recovery",
+    "title": "Recover access securely.",
+    "subtitle": "Request a password reset link and return when your email arrives.",
+    "resetTitle": "Choose a new password.",
+    "resetSubtitle": "Set a fresh password to finish recovering your account.",
+    "success": "Password reset successful. Please sign in with your new password."
+  },
+  "auth": {
+    "backToLogin": "Back to sign in"
+  },
+  "home": {
+    "preparing": "Preparing your workspace...",
+    "checking": "Checking your session and routing you to the right place."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "A clean starting point for taking control of your Flowless instance.",
+    "welcome": "Welcome",
+    "signedIn": "Signed in",
+    "apiBase": "API base",
+    "bridge": "Bridge",
+    "auth": "Auth",
+    "theme": "Theme",
+    "userData": "User data",
+    "modules": "Instance modules can extend this user payload. The starter keeps it available from useAuth().",
+    "cards": {
+      "auth": "Authentication",
+      "authText": "Session state and 2FA are handled by @pubflow/react.",
+      "experience": "Polished experience",
+      "experienceText": "Branding, language, and light or dark mode are ready from the first screen.",
+      "deploy": "Portable deploy",
+      "deployText": "Use standard Next for Node/Vercel or optional OpenNext scripts for Cloudflare."
+    }
+  },
+  "actions": {
+    "openDashboard": "Open dashboard",
+    "goLogin": "Go to sign in",
+    "retry": "Retry"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "status": {
+    "loading": "Loading",
+    "protected": "Protected page",
+    "redirecting": "Redirecting"
+  }
+}
