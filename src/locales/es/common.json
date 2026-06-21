@@ -1,58 +1,58 @@
 {
   "app": {
-    "tagline": "Un starter Pubflow listo para producción",
+    "tagline": "Un starter Pubflow limpio",
     "connectedTo": "Conectado a Flowless"
   },
   "nav": {
     "dashboard": "Dashboard",
-    "login": "Iniciar sesión",
-    "logout": "Cerrar sesión"
+    "login": "Iniciar sesion",
+    "logout": "Cerrar sesion"
   },
   "login": {
     "title": "Bienvenido de vuelta",
-    "subtitle": "Inicia sesión con seguridad. La verificación 2FA aparece automáticamente cuando tu instancia la requiere.",
-    "sideTitle": "Tu frontend Flowless, listo para tomar control.",
-    "sideCopy": "Auth, sesiones, páginas protegidas, branding, modo oscuro y llamadas cliente listas para producción ya están conectadas."
+    "subtitle": "Usa tu cuenta Flowless. La verificacion 2FA aparece cuando tu instancia la requiere.",
+    "sideTitle": "Inicia sesion para continuar.",
+    "sideCopy": "Auth, sesiones, paginas protegidas, tema, idioma y llamadas cliente quedan conectadas."
   },
   "register": {
     "eyebrow": "Crear cuenta",
-    "title": "Empieza con tu identidad Flowless.",
-    "subtitle": "Crea una cuenta usando la misma experiencia de auth con branding que verán tus usuarios.",
-    "success": "Cuenta creada correctamente. Inicia sesión con tus nuevas credenciales."
+    "title": "Crea tu cuenta.",
+    "subtitle": "Usa el flujo base del starter y luego adaptalo a tu app.",
+    "success": "Cuenta creada correctamente. Inicia sesion con tus nuevas credenciales."
   },
   "passwordReset": {
     "eyebrow": "Recuperar cuenta",
     "title": "Recupera el acceso con seguridad.",
-    "subtitle": "Solicita un enlace de recuperación y vuelve cuando llegue tu correo.",
-    "resetTitle": "Elige una nueva contraseña.",
-    "resetSubtitle": "Define una contraseña nueva para terminar de recuperar tu cuenta.",
-    "success": "Contraseña restablecida correctamente. Inicia sesión con tu nueva contraseña."
+    "subtitle": "Solicita un enlace de recuperacion y vuelve cuando llegue tu correo.",
+    "resetTitle": "Elige una nueva contrasena.",
+    "resetSubtitle": "Define una contrasena nueva para terminar de recuperar tu cuenta.",
+    "success": "Contrasena restablecida correctamente. Inicia sesion con tu nueva contrasena."
   },
   "auth": {
     "backToLogin": "Volver al login"
   },
   "home": {
     "preparing": "Preparando tu workspace...",
-    "checking": "Revisando tu sesión y llevándote al lugar correcto."
+    "checking": "Revisando tu sesion y llevandote al lugar correcto."
   },
   "dashboard": {
     "title": "Dashboard",
-    "subtitle": "Un punto de partida limpio para controlar tu instancia Flowless.",
+    "subtitle": "Un punto de partida limpio para tu backend y sesion de usuario.",
     "welcome": "Bienvenido",
-    "signedIn": "Sesión activa",
+    "signedIn": "Sesion activa",
     "apiBase": "API base",
     "bridge": "Bridge",
     "auth": "Auth",
     "theme": "Tema",
     "userData": "Datos del usuario",
-    "modules": "Los módulos de la instancia pueden extender este payload. El starter lo deja disponible desde useAuth().",
+    "modules": "Los modulos de la instancia pueden extender este payload. El starter lo deja disponible desde useAuth().",
     "cards": {
-      "auth": "Autenticación",
-      "authText": "La sesión y 2FA quedan manejadas por @pubflow/react.",
+      "auth": "Autenticacion",
+      "authText": "La sesion y 2FA quedan manejadas por @pubflow/react.",
       "experience": "Experiencia pulida",
       "experienceText": "Branding, idioma y modo claro u oscuro quedan listos desde la primera pantalla.",
       "deploy": "Deploy portable",
-      "deployText": "Usa Next estándar para Node/Vercel o scripts OpenNext opcionales para Cloudflare."
+      "deployText": "Usa Next estandar para Node/Vercel o scripts OpenNext opcionales para Cloudflare."
     }
   },
   "actions": {
@@ -66,12 +66,12 @@
     "system": "Sistema"
   },
   "language": {
-    "english": "Inglés",
-    "spanish": "Español"
+    "english": "Ingles",
+    "spanish": "Espanol"
   },
   "status": {
     "loading": "Cargando",
-    "protected": "Página protegida",
+    "protected": "Pagina protegida",
     "redirecting": "Redirigiendo"
   }
 }

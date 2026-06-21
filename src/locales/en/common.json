@@ -1,6 +1,6 @@
 {
   "app": {
-    "tagline": "A production-ready Pubflow client starter",
+    "tagline": "A clean Pubflow client starter",
     "connectedTo": "Connected to Flowless"
   },
   "nav": {
@@ -10,14 +10,14 @@
   },
   "login": {
     "title": "Welcome back",
-    "subtitle": "Sign in securely. Two-factor verification appears automatically when your instance requires it.",
-    "sideTitle": "Your Flowless frontend, ready to control.",
-    "sideCopy": "Auth, sessions, protected pages, branding, dark mode, and production-ready client calls are already wired."
+    "subtitle": "Use your Flowless account. Two-factor verification appears when your instance requires it.",
+    "sideTitle": "Sign in to continue.",
+    "sideCopy": "Auth, sessions, protected pages, theme, language, and client calls are wired for you."
   },
   "register": {
     "eyebrow": "Create account",
-    "title": "Start with your Flowless identity.",
-    "subtitle": "Create an account using the same branded auth experience your users will see.",
+    "title": "Create your account.",
+    "subtitle": "Use the starter account flow, then customize it for your app.",
     "success": "Account created successfully. Please sign in with your new credentials."
   },
   "passwordReset": {
@@ -37,7 +37,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "subtitle": "A clean starting point for taking control of your Flowless instance.",
+    "subtitle": "A clean starting point for your app backend and user session.",
     "welcome": "Welcome",
     "signedIn": "Signed in",
     "apiBase": "API base",

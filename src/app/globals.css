@@ -102,7 +102,7 @@
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 	--font-sans: var(--font-sans);
-	--font-mono: var(--font-geist-mono);
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 	--font-heading: var(--font-sans);
 	--color-card: var(--card);
 	--color-card-foreground: var(--card-foreground);
@@ -153,7 +153,7 @@
 
 	body {
 		@apply bg-background text-foreground;
-		font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+		font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 		margin: 0;
 	}
 
@@ -296,9 +296,12 @@
 }
 
 .login-shell {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(390px, 500px);
+	align-items: center;
+	background: linear-gradient(180deg, color-mix(in srgb, var(--background), var(--brand-primary) 4%), var(--background));
+	display: flex;
+	justify-content: center;
 	min-height: 100vh;
+	padding: 24px;
 }
 
 .login-info {
@@ -317,6 +320,8 @@
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
+	margin-bottom: 28px;
+	width: 100%;
 }
 
 .login-copy {
@@ -375,14 +380,24 @@
 .login-form-panel {
 	align-items: center;
 	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	box-shadow: 0 18px 70px rgb(15 23 42 / 0.08);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 32px;
+	max-width: 460px;
+	padding: 28px;
+	width: 100%;
 }
 
 .login-form-heading {
 	margin-bottom: 18px;
+	max-width: 410px;
+	width: 100%;
+}
+
+.login-form-panel > div {
 	max-width: 400px;
 	width: 100%;
 }
@@ -405,11 +420,26 @@
 	width: 100%;
 }
 
+.login-form-panel form,
+.auth-form-wrap form {
+	max-width: 400px;
+	width: 100%;
+}
+
+.login-form-panel form div,
+.auth-form-wrap form div {
+	max-width: 100%;
+	position: relative;
+}
+
+.login-form-panel form input,
+.auth-form-wrap form input {
+	min-width: 0;
+}
+
 .auth-shell {
 	align-items: center;
-	background:
-		radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--brand-accent), transparent 82%), transparent 26%),
-		var(--background);
+	background: linear-gradient(180deg, color-mix(in srgb, var(--background), var(--brand-accent) 4%), var(--background));
 	display: flex;
 	justify-content: center;
 	min-height: 100vh;
@@ -421,8 +451,8 @@
 	border: 1px solid var(--border);
 	border-radius: 8px;
 	display: grid;
-	gap: 28px;
-	max-width: 980px;
+	gap: 22px;
+	max-width: 520px;
 	padding: 28px;
 	width: 100%;
 }
@@ -432,11 +462,11 @@
 }
 
 .auth-copy h1 {
-	font-size: clamp(32px, 5vw, 58px);
+	font-size: clamp(26px, 5vw, 36px);
 	font-weight: 730;
 	letter-spacing: 0;
-	line-height: 1.04;
-	margin: 18px 0 10px;
+	line-height: 1.08;
+	margin: 14px 0 10px;
 }
 
 .auth-copy p {
@@ -565,7 +595,7 @@
 	border: 1px solid color-mix(in srgb, var(--border), transparent 25%);
 	border-radius: 8px;
 	display: block;
-	font-family: var(--font-geist-mono), Consolas, monospace;
+	font-family: var(--font-mono), Consolas, monospace;
 	overflow: auto;
 }
 
@@ -617,10 +647,13 @@
 
 @media (max-width: 640px) {
 	.topbar,
-	.dashboard-hero,
-	.login-toolbar {
+	.dashboard-hero {
 		align-items: flex-start;
 		flex-direction: column;
+	}
+
+	.login-toolbar {
+		align-items: center;
 	}
 
 	.topbar {

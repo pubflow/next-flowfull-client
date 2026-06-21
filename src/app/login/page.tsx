@@ -3,22 +3,14 @@
 import { useEffect } from 'react';
 import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Globe2, Rocket, ShieldCheck, Sparkles } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { LoginForm, useAuth } from '@pubflow/react';
 import { useTranslation } from 'react-i18next';
 import { AppLogo } from '@/components/ui/app-logo';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { LanguageToggle } from '@/components/ui/language-toggle';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { PUBFLOW_CONFIG, getRedirectUrl } from '@/lib/pubflow-config';
-
-const features = [
-  { key: 'auth', icon: ShieldCheck },
-  { key: 'experience', icon: Globe2 },
-  { key: 'deploy', icon: Rocket },
-];
 
 export default function LoginPage() {
   return (
@@ -44,7 +36,7 @@ function LoginPageContent() {
 
   return (
     <main className="login-shell">
-      <section className="login-info">
+      <section className="login-form-panel">
         <div className="login-toolbar">
           <AppLogo />
           <div className="topbar-actions">
@@ -53,32 +45,9 @@ function LoginPageContent() {
           </div>
         </div>
 
-        <div className="login-copy">
-          <Badge className="feature-badge">
-            <ShieldCheck size={16} />
-            <span>{t('app.connectedTo')}</span>
-          </Badge>
-          <h1>{t('login.sideTitle')}</h1>
-          <p>{t('login.sideCopy')}</p>
-        </div>
-
-        <div className="login-feature-grid">
-          {features.map(({ key, icon: Icon }) => (
-            <Card className="mini-card" key={key}>
-              <CardContent className="mini-card-content">
-                <Icon size={18} />
-                <strong>{t(`dashboard.cards.${key}`)}</strong>
-                <span>{t(`dashboard.cards.${key}Text`)}</span>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="login-form-panel">
         <div className="login-form-heading">
           <div className="eyebrow">
-            <Sparkles size={14} />
+            <LogIn size={14} />
             <span>{t('login.title')}</span>
           </div>
           <h2>{PUBFLOW_CONFIG.APP_NAME}</h2>

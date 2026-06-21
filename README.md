@@ -8,7 +8,7 @@ Universal Next.js starter for Flowless/Pubflow frontends. It ships with branded 
 - Protected `/dashboard` with `useAuth()` user data surfaced for future modules.
 - Environment-based branding: app name, logo, colors, theme, language, API paths.
 - Bridge requests can send `X-Bridge-Secret` directly from public env config.
-- Portable deploy: standard Next.js for Node/self-host/Vercel, optional OpenNext Cloudflare scripts.
+- Portable deploy: standard Next.js for Node/self-host/Vercel, optional OpenNext Cloudflare scripts, plus a Deno Deploy path.
 
 ## Quick Start
 
@@ -53,7 +53,10 @@ npm run lint        # ESLint
 npm run build:cf    # OpenNext Cloudflare build
 npm run preview:cf  # Cloudflare local preview
 npm run deploy:cf   # Cloudflare deploy
+npm run build:deno  # Deno Deploy build check
 ```
+
+Cloudflare/OpenNext builds should use the normal npm or Bun install layout. If Windows reports `EPERM` while creating symlinks under `node_modules\.deno`, rebuild from a clean npm/Bun install, enable Developer Mode/elevated symlinks, or run the Cloudflare build in WSL/Linux. The Deno deploy path remains separate via `npm run build:deno`.
 
 ## Routes
 
