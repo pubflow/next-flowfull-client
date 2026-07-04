@@ -18,20 +18,24 @@ export function Topbar() {
       <Link href="/dashboard" className="topbar-brand">
         <AppLogo />
       </Link>
-      <nav className="topbar-actions">
+
+      <div className="topbar-actions">
         <ThemeToggle />
         <LanguageToggle />
         {isAuthenticated ? (
           <Button type="button" variant="outline" onClick={() => logout()}>
             <LogOut size={16} />
-            <span>{t('nav.logout')}</span>
+            <span className="hidden sm:inline">{t('nav.logout')}</span>
           </Button>
         ) : (
           <Button asChild>
-            <Link href="/login">{t('nav.login')}</Link>
+            <Link href="/login">
+              <span className="hidden sm:inline">{t('nav.login')}</span>
+              <span className="sm:hidden">{t('nav.login')}</span>
+            </Link>
           </Button>
         )}
-      </nav>
+      </div>
     </header>
   );
-}
+};

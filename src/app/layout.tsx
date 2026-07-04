@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
 	title: PUBFLOW_CONFIG.APP_NAME,
 	description: "Flowfull/Pubflow Next.js client starter",
+	viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({

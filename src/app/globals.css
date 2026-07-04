@@ -258,11 +258,20 @@
 	z-index: 20;
 }
 
-.topbar-brand,
-.topbar-actions {
+.topbar-brand {
 	align-items: center;
 	display: flex;
 	gap: 10px;
+	min-width: 0;
+}
+
+.topbar-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-left: auto;
 	min-width: 0;
 }
 
@@ -646,7 +655,12 @@
 }
 
 @media (max-width: 640px) {
-	.topbar,
+	.topbar {
+		gap: 10px;
+		min-height: 58px;
+		padding: 10px 16px;
+	}
+
 	.dashboard-hero {
 		align-items: flex-start;
 		flex-direction: column;
@@ -654,14 +668,6 @@
 
 	.login-toolbar {
 		align-items: center;
-	}
-
-	.topbar {
-		padding: 14px 18px;
-	}
-
-	.topbar-actions {
-		flex-wrap: wrap;
 	}
 
 	.dashboard-hero,
