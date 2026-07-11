@@ -2,10 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { UserPlus } from 'lucide-react';
-import { AccountCreationForm } from '@pubflow/react';
 import { useTranslation } from 'react-i18next';
 import { AuthPageShell } from '@/components/auth/auth-page-shell';
-import { PUBFLOW_CONFIG } from '@/lib/pubflow-config';
+import { CustomRegisterForm } from '@/components/auth/pubflow-auth-forms';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,14 +17,7 @@ export default function RegisterPage() {
       subtitle={t('register.subtitle')}
       icon={UserPlus}
     >
-      <AccountCreationForm
-        config={{
-          primaryColor: PUBFLOW_CONFIG.PRIMARY_COLOR,
-          appName: PUBFLOW_CONFIG.APP_NAME,
-          logo: PUBFLOW_CONFIG.APP_LOGO,
-          apiBaseUrl: PUBFLOW_CONFIG.API_BASE_URL,
-          requiredFields: ['name', 'lastName', 'email', 'password'],
-        }}
+      <CustomRegisterForm
         onSuccess={() => {
           router.replace(`/login?message=${encodeURIComponent(t('register.success'))}`);
         }}

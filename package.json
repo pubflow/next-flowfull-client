@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:preview": "next dev -H 0.0.0.0",
     "dev:deno": "deno run -A npm:next dev",
     "dev:cf": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "build": "next build",

@@ -25,6 +25,8 @@ export function Providers({ children }: { children: ReactNode }) {
     const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
 
     root.dataset.theme = resolved;
+    root.classList.toggle('dark', resolved === 'dark');
+    root.classList.toggle('light', resolved === 'light');
     root.style.setProperty('--brand-primary', PUBFLOW_CONFIG.PRIMARY_COLOR);
     root.style.setProperty('--brand-secondary', PUBFLOW_CONFIG.SECONDARY_COLOR);
     root.style.setProperty('--brand-accent', PUBFLOW_CONFIG.ACCENT_COLOR);

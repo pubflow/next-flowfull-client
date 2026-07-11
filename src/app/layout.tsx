@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { PUBFLOW_CONFIG } from "@/lib/pubflow-config";
@@ -10,7 +10,16 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
 	title: PUBFLOW_CONFIG.APP_NAME,
 	description: "Flowfull/Pubflow Next.js client starter",
-	viewport: "width=device-width, initial-scale=1",
+	icons: {
+		icon: [{ url: "/Pubflow-Favicon.png", type: "image/png" }],
+		shortcut: ["/Pubflow-Favicon.png"],
+		apple: [{ url: "/Pubflow-Favicon.png" }],
+	},
+};
+
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
 };
 
 export default function RootLayout({
@@ -21,7 +30,8 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={cn("font-sans", inter.variable)}>
 			<head>
-				<link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
+				<link rel="icon" href="/Pubflow-Favicon.png" type="image/png" />
+				<link rel="apple-touch-icon" href="/Pubflow-Favicon.png" />
 			</head>
 			<body className="antialiased">
 				<Providers>{children}</Providers>
