@@ -79,8 +79,30 @@ export function isPublicPath(pathname: string): boolean {
 export function isEmbeddedPreviewRuntime(): boolean {
   if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
   if (typeof window === 'undefined') return false;
+
   const path = window.location.pathname;
-  return /\/__(?:preview|virtual)__\//.test(path);
+  if (/\/__(?:preview|virtual)__\//.test(path)) return true;
+
+  // Same-origin iframe under the coding console. Absolute /login|/dashboard
+  // navigations escape the `/__preview__/…` prefix and load the host app —
+  // treat any framed preview shell as embedded even before env inlines.
+  try {
+    if (window.parent !== window) {
+      try {
+        const parentPath = window.parent.location.pathname || '';
+        if (/\/__(?:preview|virtual)__\//.test(parentPath)) return true;
+        if (/\/console\//.test(parentPath) || /agent-workspace|zenocode/i.test(parentPath)) return true;
+      } catch {
+        // Cross-origin parent: still framed → stay in preview-safe mode.
+        return true;
+      }
+      return true;
+    }
+  } catch {
+    return false;
+  }
+
+  return false;
 }
 
 /**

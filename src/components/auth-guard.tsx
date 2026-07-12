@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '@pubflow/react';
@@ -13,7 +13,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { isAuthenticated, isLoading } = useAuth();
-  const embedded = isEmbeddedPreviewRuntime();
+  // Fail closed while mounting so host session cookies never bounce the iframe.
+  const [embedded, setEmbedded] = useState(true);
+
+  useEffect(() => {
+    setEmbedded(isEmbeddedPreviewRuntime());
+  }, []);
 
   useEffect(() => {
     if (embedded) return;
