@@ -1,14 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import { Code2, LayoutDashboard, LogIn, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { isEmbeddedPreviewRuntime, previewAwareHref } from '@/lib/pubflow-config';
 
 export function PreviewWelcome() {
   const { t } = useTranslation();
+  // Full-page navigations keep the `/__preview__/pod…/port` prefix so the
+  // Nodepod service worker can proxy into the Next app (Next <Link href="/login">
+  // would jump to the host Flowfull console).
+  const loginHref = isEmbeddedPreviewRuntime() ? previewAwareHref('/login') : '/login';
+  const dashboardHref = isEmbeddedPreviewRuntime() ? previewAwareHref('/dashboard') : '/dashboard';
 
   return (
     <main className="preview-welcome-shell">
@@ -24,16 +29,16 @@ export function PreviewWelcome() {
         <p>{t('preview.subtitle')}</p>
         <div className="preview-welcome-actions">
           <Button asChild size="lg">
-            <Link href="/login">
+            <a href={loginHref}>
               <LogIn size={16} />
               {t('actions.goLogin')}
-            </Link>
+            </a>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <Link href="/dashboard">
+            <a href={dashboardHref}>
               <LayoutDashboard size={16} />
               {t('actions.openDashboard')}
-            </Link>
+            </a>
           </Button>
         </div>
       </section>

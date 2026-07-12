@@ -8,7 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { AuthPageShell } from '@/components/auth/auth-page-shell';
 import { CustomLoginForm, type LoginStep } from '@/components/auth/pubflow-auth-forms';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { buildSocialLoginUrl, getRedirectUrl } from '@/lib/pubflow-config';
+import {
+  buildSocialLoginUrl,
+  getRedirectUrl,
+  isEmbeddedPreviewRuntime,
+  previewAwareHref,
+} from '@/lib/pubflow-config';
 
 export default function LoginPage() {
   return (
@@ -16,6 +21,22 @@ export default function LoginPage() {
       <LoginPageContent />
     </Suspense>
   );
+}
+
+function navigateApp(path: string, router: ReturnType<typeof useRouter>) {
+  if (isEmbeddedPreviewRuntime()) {
+    window.location.assign(previewAwareHref(path));
+    return;
+  }
+  router.push(path);
+}
+
+function replaceApp(path: string, router: ReturnType<typeof useRouter>) {
+  if (isEmbeddedPreviewRuntime()) {
+    window.location.replace(previewAwareHref(path));
+    return;
+  }
+  router.replace(path);
 }
 
 function LoginPageContent() {
@@ -29,7 +50,7 @@ function LoginPageContent() {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      router.replace(redirectPath);
+      replaceApp(redirectPath, router);
     }
   }, [isAuthenticated, redirectPath, router, user]);
 
@@ -55,10 +76,10 @@ function LoginPageContent() {
       <CustomLoginForm
         redirectPath={redirectPath}
         onStepChange={setStep}
-        onSuccess={() => router.replace(redirectPath)}
+        onSuccess={() => replaceApp(redirectPath, router)}
         onError={(error) => console.error('Login error:', error)}
-        onPasswordReset={() => router.push('/forgot-password')}
-        onAccountCreation={() => router.push('/register')}
+        onPasswordReset={() => navigateApp('/forgot-password', router)}
+        onAccountCreation={() => navigateApp('/register', router)}
         onSocialLogin={(provider) => {
           window.location.href = buildSocialLoginUrl(provider, redirectPath);
         }}

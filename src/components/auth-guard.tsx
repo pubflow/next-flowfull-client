@@ -6,18 +6,26 @@ import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '@pubflow/react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
+import { isEmbeddedPreviewRuntime } from '@/lib/pubflow-config';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const { t } = useTranslation();
   const { isAuthenticated, isLoading } = useAuth();
+  const embedded = isEmbeddedPreviewRuntime();
 
   useEffect(() => {
+    if (embedded) return;
     if (!isLoading && !isAuthenticated) {
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [isAuthenticated, isLoading, pathname, router]);
+  }, [embedded, isAuthenticated, isLoading, pathname, router]);
+
+  // Coding-agent iframe: never bounce to host /login (shared platform origin).
+  if (embedded) {
+    return <>{children}</>;
+  }
 
   if (isLoading || !isAuthenticated) {
     return (

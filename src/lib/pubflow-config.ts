@@ -74,3 +74,24 @@ export function isPublicPath(pathname: string): boolean {
     return pathname.startsWith(path);
   });
 }
+
+/** True inside Nodepod / coding-agent iframe (path-prefixed same-origin preview). */
+export function isEmbeddedPreviewRuntime(): boolean {
+  if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
+  if (typeof window === 'undefined') return false;
+  const path = window.location.pathname;
+  return /\/__(?:preview|virtual)__\//.test(path);
+}
+
+/**
+ * Keep Next.js navigations under `/__preview__/pod…/port` so `/login` does not
+ * escape into the host Flowfull console on platform.pubflow.com.
+ */
+export function previewAwareHref(path: string): string {
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  if (typeof window === 'undefined') return normalized;
+  const match = window.location.pathname.match(/^(\/(?:__preview__|__virtual__)\/[^/]+\/\d+)/);
+  if (!match) return normalized;
+  if (normalized.startsWith(match[1])) return normalized;
+  return `${match[1]}${normalized === '/' ? '' : normalized}`;
+}

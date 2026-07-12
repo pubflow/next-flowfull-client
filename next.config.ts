@@ -24,6 +24,14 @@ function loadDevVars() {
 loadDevVars();
 
 const nextConfig: NextConfig = {
+	// Coding-agent / Nodepod preview is served from platform.pubflow.com via SW.
+	// Without this, Next 16 blocks fonts and /_next assets (403) as cross-origin.
+	allowedDevOrigins: [
+		"platform.pubflow.com",
+		"preview.pubflow.com",
+		"localhost",
+		"127.0.0.1",
+	],
 	turbopack: {
 		root: process.cwd(),
 	},
