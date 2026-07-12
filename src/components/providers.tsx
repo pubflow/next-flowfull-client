@@ -11,10 +11,20 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 
 export function Providers({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeMode>(() => {
-    if (typeof window === 'undefined') return PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode;
-    const stored = window.localStorage.getItem('flowfull-theme') as ThemeMode | null;
+    if (typeof window === 'undefined') {
+      return PUBFLOW_CONFIG.PREVIEW_MODE ? 'dark' : (PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode);
+    }
+    // Isolate from the host Flowfull console localStorage on the same origin.
+    const storageKey = PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)
+      ? 'flowfull-client-theme'
+      : 'flowfull-theme';
+    const stored = window.localStorage.getItem(storageKey) as ThemeMode | null;
     if (stored === 'light' || stored === 'dark' || stored === 'system') {
       return stored;
+    }
+    // Coding preview defaults dark so it matches the console chrome users expect.
+    if (PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)) {
+      return 'dark';
     }
     return PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode;
   });
@@ -23,6 +33,9 @@ export function Providers({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
+    const storageKey = PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)
+      ? 'flowfull-client-theme'
+      : 'flowfull-theme';
 
     root.dataset.theme = resolved;
     root.classList.toggle('dark', resolved === 'dark');
@@ -30,7 +43,7 @@ export function Providers({ children }: { children: ReactNode }) {
     root.style.setProperty('--brand-primary', PUBFLOW_CONFIG.PRIMARY_COLOR);
     root.style.setProperty('--brand-secondary', PUBFLOW_CONFIG.SECONDARY_COLOR);
     root.style.setProperty('--brand-accent', PUBFLOW_CONFIG.ACCENT_COLOR);
-    window.localStorage.setItem('flowfull-theme', theme);
+    window.localStorage.setItem(storageKey, theme);
   }, [theme]);
 
   const themeContext = useMemo(() => ({
