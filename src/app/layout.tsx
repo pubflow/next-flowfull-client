@@ -19,7 +19,7 @@ export const viewport: Viewport = {
 	initialScale: 1,
 };
 
-const PREVIEW_THEME_BOOT_SCRIPT = `(function(){try{var p=location.pathname,s=location.search;if(${PUBFLOW_CONFIG.PREVIEW_MODE ? "true" : "false"}||window.__PUBFLOW_PREVIEW__||/(?:__preview__|__virtual__)/.test(p)||/^\\/preview\\/pod[^/]+/i.test(p)||/[?&]pubflowPreview=1(?:&|$)/.test(s)){window.__PUBFLOW_PREVIEW__=true;var r=document.documentElement;r.classList.add("dark");r.dataset.theme="dark";}}catch(e){}})();`;
+const PREVIEW_THEME_BOOT_SCRIPT = `(function(){try{var p=location.pathname,s=location.search;if(${PUBFLOW_CONFIG.PREVIEW_MODE ? "true" : "false"}||window.__PUBFLOW_PREVIEW__||/(?:__preview__|__virtual__)/.test(p)||/^\\/preview\\/pod[^/]+/i.test(p)||/[?&]pubflowPreview=1(?:&|$)/.test(s)){window.__PUBFLOW_PREVIEW__=true;var r=document.documentElement;r.classList.add("dark");r.dataset.theme="dark";r.style.colorScheme="dark";}}catch(e){}})();`;
 
 export default function RootLayout({
 	children,
@@ -36,6 +36,7 @@ export default function RootLayout({
 			lang="en"
 			className={cn("font-sans", previewDark && "dark")}
 			data-theme={previewDark ? "dark" : undefined}
+			style={previewDark ? { colorScheme: "dark" } : undefined}
 			suppressHydrationWarning
 		>
 			<head>

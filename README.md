@@ -67,12 +67,14 @@ In the Pubflow console, Nodepod injects preview flags automatically (`NEXT_PUBLI
 
 ### Applying starter fixes to an existing OctoBox workspace
 
-Starter changes (for example `src/app/page.tsx`, `src/lib/pubflow-config.ts`, `src/components/auth-guard.tsx`, `src/components/providers.tsx`, `src/app/layout.tsx`) do **not** reach a live workspace until you:
+Starter changes (for example `src/app/page.tsx`, `src/app/globals.css`, `src/styles/shadcn-tailwind.css`, `src/lib/pubflow-config.ts`, `src/components/auth-guard.tsx`, `src/components/providers.tsx`, `src/app/layout.tsx`) do **not** reach a live workspace until you:
 
 1. **Reset the workspace** from the agent console (recommended after a starter upgrade), or
 2. **Save/sync** the updated files into the workspace file tree.
 
-After updating `pubflow-flowfull-client` (Nodepod runtime), **redeploy** `platform.pubflow.com` so preview env restart logic and the `__PUBFLOW_PREVIEW__` marker script are active.
+After updating `pubflow-flowfull-client` (Nodepod runtime), **redeploy** `platform.pubflow.com` so the slim install manifest keeps `@tailwindcss/postcss` and preview env restart logic stay active.
+
+If preview styling looks broken (serif headings, unstyled buttons), hard-refresh once, reset/sync the workspace so `globals.css` and `package.json` pick up vendored shadcn CSS + Tailwind deps, then reopen preview.
 
 Then hard-refresh the console once (Service Worker at `/__sw__.js`) and reopen the workspace preview.
 

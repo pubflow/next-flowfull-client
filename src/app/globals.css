@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import "../styles/shadcn-tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -264,6 +264,8 @@
 }
 
 .preview-welcome-hero h1 {
+	color: var(--foreground);
+	font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 	font-size: clamp(42px, 7vw, 82px);
 	letter-spacing: -0.065em;
 	line-height: 0.94;
