@@ -19,6 +19,8 @@ export const viewport: Viewport = {
 	initialScale: 1,
 };
 
+const PREVIEW_THEME_BOOT_SCRIPT = `(function(){try{var p=location.pathname,s=location.search;if(${PUBFLOW_CONFIG.PREVIEW_MODE ? "true" : "false"}||window.__PUBFLOW_PREVIEW__||/(?:__preview__|__virtual__)/.test(p)||/^\\/preview\\/pod[^/]+/i.test(p)||/[?&]pubflowPreview=1(?:&|$)/.test(s)){window.__PUBFLOW_PREVIEW__=true;var r=document.documentElement;r.classList.add("dark");r.dataset.theme="dark";}}catch(e){}})();`;
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -37,6 +39,7 @@ export default function RootLayout({
 			suppressHydrationWarning
 		>
 			<head>
+				<script dangerouslySetInnerHTML={{ __html: PREVIEW_THEME_BOOT_SCRIPT }} />
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link

@@ -75,13 +75,34 @@ export function isPublicPath(pathname: string): boolean {
   });
 }
 
+declare global {
+  interface Window {
+    __PUBFLOW_PREVIEW__?: boolean;
+  }
+}
+
+/** Path prefixes used by Nodepod transport and public popout shells. */
+export function isPreviewPathname(pathname: string): boolean {
+  return /\/(?:__preview__|__virtual__)\//.test(pathname)
+    || /^\/preview\/pod[^/]+/i.test(pathname);
+}
+
+/** Runtime marker injected by Nodepod preview scripts or transport query flags. */
+export function hasPreviewRuntimeMarker(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (window.__PUBFLOW_PREVIEW__ === true) return true;
+  return /[?&]pubflowPreview=1(?:&|$)/.test(window.location.search);
+}
+
 /** True inside Nodepod / coding-agent iframe (path-prefixed same-origin preview). */
 export function isEmbeddedPreviewRuntime(): boolean {
   if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
   if (typeof window === 'undefined') return false;
 
+  if (hasPreviewRuntimeMarker()) return true;
+
   const path = window.location.pathname;
-  if (/\/__(?:preview|virtual)__\//.test(path)) return true;
+  if (isPreviewPathname(path)) return true;
 
   // Same-origin iframe under the coding console. Absolute /login|/dashboard
   // navigations escape the `/__preview__/…` prefix and load the host app —
@@ -90,7 +111,7 @@ export function isEmbeddedPreviewRuntime(): boolean {
     if (window.parent !== window) {
       try {
         const parentPath = window.parent.location.pathname || '';
-        if (/\/__(?:preview|virtual)__\//.test(parentPath)) return true;
+        if (isPreviewPathname(parentPath)) return true;
         if (/\/console\//.test(parentPath) || /agent-workspace|zenocode/i.test(parentPath)) return true;
       } catch {
         // Cross-origin parent: still framed → stay in preview-safe mode.
@@ -103,6 +124,11 @@ export function isEmbeddedPreviewRuntime(): boolean {
   }
 
   return false;
+}
+
+/** Build-time or runtime coding-agent / Nodepod preview (use for routing + theme). */
+export function isPreviewRuntime(): boolean {
+  return PUBFLOW_CONFIG.PREVIEW_MODE || isEmbeddedPreviewRuntime();
 }
 
 /**

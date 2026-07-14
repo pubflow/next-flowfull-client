@@ -6,7 +6,7 @@ import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '@pubflow/react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
-import { isEmbeddedPreviewRuntime } from '@/lib/pubflow-config';
+import { isPreviewRuntime } from '@/lib/pubflow-config';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -17,7 +17,13 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const [embedded, setEmbedded] = useState(true);
 
   useEffect(() => {
-    setEmbedded(isEmbeddedPreviewRuntime());
+    const detected = isPreviewRuntime();
+    setEmbedded((prev) => {
+      if (typeof window !== 'undefined' && window.parent !== window) {
+        return detected || prev;
+      }
+      return detected;
+    });
   }, []);
 
   useEffect(() => {

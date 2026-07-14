@@ -5,25 +5,31 @@ import { I18nextProvider } from 'react-i18next';
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { PubflowInstanceConfig } from '@pubflow/core';
 import { i18n } from '@/lib/i18n';
-import { PUBFLOW_CONFIG } from '@/lib/pubflow-config';
+import { isPreviewPathname, isPreviewRuntime, PUBFLOW_CONFIG } from '@/lib/pubflow-config';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
+
+function resolvePreviewThemeContext(): boolean {
+  if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
+  if (typeof window === 'undefined') return false;
+  return isPreviewRuntime() || isPreviewPathname(window.location.pathname);
+}
+
+function previewThemeStorageKey(): string {
+  return resolvePreviewThemeContext() ? 'flowfull-client-theme' : 'flowfull-theme';
+}
 
 export function Providers({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeMode>(() => {
     if (typeof window === 'undefined') {
       return PUBFLOW_CONFIG.PREVIEW_MODE ? 'dark' : (PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode);
     }
-    // Isolate from the host Flowfull console localStorage on the same origin.
-    const storageKey = PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)
-      ? 'flowfull-client-theme'
-      : 'flowfull-theme';
+    const storageKey = previewThemeStorageKey();
     const stored = window.localStorage.getItem(storageKey) as ThemeMode | null;
     if (stored === 'light' || stored === 'dark' || stored === 'system') {
       return stored;
     }
-    // Coding preview defaults dark so it matches the console chrome users expect.
-    if (PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)) {
+    if (resolvePreviewThemeContext()) {
       return 'dark';
     }
     return PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode;
@@ -33,9 +39,7 @@ export function Providers({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
-    const storageKey = PUBFLOW_CONFIG.PREVIEW_MODE || /\/__(?:preview|virtual)__\//.test(window.location.pathname)
-      ? 'flowfull-client-theme'
-      : 'flowfull-theme';
+    const storageKey = previewThemeStorageKey();
 
     root.dataset.theme = resolved;
     root.classList.toggle('dark', resolved === 'dark');
@@ -58,6 +62,8 @@ export function Providers({ children }: { children: ReactNode }) {
     return { 'X-Bridge-Secret': PUBFLOW_CONFIG.BRIDGE_SECRET };
   }, []);
 
+  const previewRuntime = resolvePreviewThemeContext();
+
   return (
     <I18nextProvider i18n={i18n}>
       <PubflowProvider
@@ -70,7 +76,7 @@ export function Providers({ children }: { children: ReactNode }) {
         } as PubflowInstanceConfig}
         loginRedirectPath={PUBFLOW_CONFIG.LOGIN_REDIRECT_PATH}
         enableDebugTools={PUBFLOW_CONFIG.ENABLE_DEBUG_TOOLS}
-        showSessionAlerts={PUBFLOW_CONFIG.SHOW_SESSION_ALERTS}
+        showSessionAlerts={previewRuntime ? false : PUBFLOW_CONFIG.SHOW_SESSION_ALERTS}
         persistentCache={{ enabled: PUBFLOW_CONFIG.ENABLE_PERSISTENT_CACHE }}
         theme={themeContext}
       >
