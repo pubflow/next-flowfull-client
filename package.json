@@ -21,7 +21,6 @@
     "cf:typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.19.9",
     "@pubflow/core": "0.5.0",
     "@pubflow/react": "0.5.0",
     "@tailwindcss/postcss": "^4",
@@ -41,6 +40,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "^1.19.9",
     "@types/node": "20.19.43",
     "@types/react": "^19.1.7",
     "@types/react-dom": "^19.1.7",
