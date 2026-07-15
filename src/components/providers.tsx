@@ -15,40 +15,47 @@ function resolvePreviewThemeContext(): boolean {
   return isPreviewRuntime() || isPreviewPathname(window.location.pathname);
 }
 
-function previewThemeStorageKey(): string {
-  return resolvePreviewThemeContext() ? 'flowfull-client-theme' : 'flowfull-theme';
+function themeStorageKey(previewRuntime: boolean): string {
+  return previewRuntime ? 'flowfull-client-theme' : 'flowfull-theme';
+}
+
+function configuredTheme(): ThemeMode {
+  const value = PUBFLOW_CONFIG.PREVIEW_MODE ? 'dark' : PUBFLOW_CONFIG.DEFAULT_THEME;
+  return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
 }
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<ThemeMode>(() => {
-    if (typeof window === 'undefined') {
-      return PUBFLOW_CONFIG.PREVIEW_MODE ? 'dark' : (PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode);
-    }
-    const storageKey = previewThemeStorageKey();
-    const stored = window.localStorage.getItem(storageKey) as ThemeMode | null;
-    if (stored === 'light' || stored === 'dark' || stored === 'system') {
-      return stored;
-    }
-    if (resolvePreviewThemeContext()) {
-      return 'dark';
-    }
-    return PUBFLOW_CONFIG.DEFAULT_THEME as ThemeMode;
-  });
+  // Keep SSR and the first client render identical. Runtime markers, frame
+  // state and isolated preferences are deliberately read only after mount.
+  const [theme, setTheme] = useState<ThemeMode>(configuredTheme);
+  const [previewRuntime, setPreviewRuntime] = useState(PUBFLOW_CONFIG.PREVIEW_MODE);
+  const [preferencesMounted, setPreferencesMounted] = useState(false);
+
+  useEffect(() => {
+    const detectedPreview = resolvePreviewThemeContext();
+    const stored = window.localStorage.getItem(themeStorageKey(detectedPreview));
+    const restored = stored === 'light' || stored === 'dark' || stored === 'system'
+      ? stored
+      : detectedPreview ? 'dark' : configuredTheme();
+    setPreviewRuntime(detectedPreview);
+    setTheme(restored);
+    setPreferencesMounted(true);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
-    const storageKey = previewThemeStorageKey();
-
     root.dataset.theme = resolved;
     root.classList.toggle('dark', resolved === 'dark');
     root.classList.toggle('light', resolved === 'light');
     root.style.setProperty('--brand-primary', PUBFLOW_CONFIG.PRIMARY_COLOR);
     root.style.setProperty('--brand-secondary', PUBFLOW_CONFIG.SECONDARY_COLOR);
     root.style.setProperty('--brand-accent', PUBFLOW_CONFIG.ACCENT_COLOR);
-    window.localStorage.setItem(storageKey, theme);
-  }, [theme]);
+    if (preferencesMounted) {
+      window.localStorage.setItem(themeStorageKey(previewRuntime), theme);
+    }
+  }, [preferencesMounted, previewRuntime, theme]);
 
   const themeContext = useMemo(() => ({
     primaryColor: PUBFLOW_CONFIG.PRIMARY_COLOR,
@@ -61,8 +68,6 @@ export function Providers({ children }: { children: ReactNode }) {
     if (!PUBFLOW_CONFIG.BRIDGE_SECRET) return undefined;
     return { 'X-Bridge-Secret': PUBFLOW_CONFIG.BRIDGE_SECRET };
   }, []);
-
-  const previewRuntime = resolvePreviewThemeContext();
 
   return (
     <I18nextProvider i18n={i18n}>
