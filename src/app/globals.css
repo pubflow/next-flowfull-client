@@ -297,11 +297,45 @@
 	margin-top: 28px;
 }
 
+.preview-welcome-actions .button {
+	align-items: center;
+	border-radius: 8px;
+	display: inline-flex;
+	font-weight: 760;
+	gap: 8px;
+	min-height: 48px;
+	padding: 0 18px;
+}
+
+.preview-welcome-actions .button-primary {
+	background: var(--brand-primary);
+	color: #020817;
+}
+
+.preview-welcome-actions .button-outline {
+	background: color-mix(in srgb, var(--card), transparent 20%);
+	border: 1px solid color-mix(in srgb, var(--border), transparent 20%);
+	color: var(--foreground);
+}
+
 .preview-welcome-card {
 	backdrop-filter: blur(24px);
 	background: color-mix(in srgb, var(--card), transparent 7%);
 	border-color: color-mix(in srgb, var(--brand-primary), var(--border) 72%);
 	box-shadow: 0 24px 70px color-mix(in srgb, var(--brand-primary), transparent 86%);
+	border: 1px solid color-mix(in srgb, var(--brand-primary), var(--border) 72%);
+	border-radius: 24px;
+	padding: 24px;
+}
+
+.preview-welcome-card h2 {
+	font-size: 22px;
+	margin: 0 0 8px;
+}
+
+.preview-welcome-card > p {
+	color: var(--muted-foreground);
+	margin: 0 0 20px;
 }
 
 .preview-welcome-steps {

@@ -41,17 +41,21 @@ export default function RootLayout({
 		>
 			<head>
 				<script dangerouslySetInnerHTML={{ __html: PREVIEW_THEME_BOOT_SCRIPT }} />
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-				<link
-					href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-					rel="stylesheet"
-				/>
+				{!previewDark ? (
+					<>
+						<link rel="preconnect" href="https://fonts.googleapis.com" />
+						<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+						<link
+							href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+							rel="stylesheet"
+						/>
+					</>
+				) : null}
 				<link rel="icon" href="/Pubflow-Favicon.png" type="image/png" />
 				<link rel="apple-touch-icon" href="/Pubflow-Favicon.png" />
 			</head>
 			<body className="antialiased">
-				<Providers>{children}</Providers>
+				{previewDark ? children : <Providers>{children}</Providers>}
 			</body>
 		</html>
 	);
