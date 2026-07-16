@@ -1,4 +1,14 @@
-@import "tailwindcss";
+/*
+ * Keep Tailwind v4 source discovery bounded for browser-based previews.
+ *
+ * The starter root contains deployment artifacts and generated files such as
+ * Cloudflare types, lockfiles, service-worker code and OpenNext output. Letting
+ * Tailwind auto-discover from the project root makes Next/Nodepod spend the
+ * route compilation budget scanning files the app never imports. The app source
+ * lives under src, so make that scope explicit.
+ */
+@import "tailwindcss" source(none);
+@source "../";
 @import "tw-animate-css";
 @import "../styles/shadcn-tailwind.css";
 
