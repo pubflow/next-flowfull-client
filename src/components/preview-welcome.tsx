@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { Code2, LayoutDashboard, LogIn, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { isEmbeddedPreviewRuntime, previewAwareHref } from '@/lib/pubflow-config';
 
 export function PreviewWelcome() {
+  const { t } = useTranslation();
   const [hrefs, setHrefs] = useState({ login: '/login', dashboard: '/dashboard' });
   useEffect(() => {
     if (!isEmbeddedPreviewRuntime()) return;
@@ -27,24 +29,21 @@ export function PreviewWelcome() {
         </div>
         <Badge variant="secondary" className="eyebrow-badge">
           <Sparkles size={14} />
-          Coding preview
+          {t('preview.eyebrow')}
         </Badge>
-        <h1>Welcome to your Pubflow App</h1>
-        <p>
-          This friendly preview starts here so you can edit confidently. Your login,
-          dashboard, auth bridge, theme, and deploy scripts are still ready.
-        </p>
+        <h1>{t('preview.title')}</h1>
+        <p>{t('preview.subtitle')}</p>
         <div className="preview-welcome-actions">
           <Button asChild size="lg">
             <a href={loginHref}>
               <LogIn size={16} />
-              Go to sign in
+              {t('actions.goLogin')}
             </a>
           </Button>
           <Button asChild size="lg" variant="outline">
             <a href={dashboardHref}>
               <LayoutDashboard size={16} />
-              Open dashboard
+              {t('actions.openDashboard')}
             </a>
           </Button>
         </div>
@@ -52,23 +51,21 @@ export function PreviewWelcome() {
 
       <Card className="preview-welcome-card">
         <CardHeader>
-          <CardTitle>Start customizing</CardTitle>
-          <CardDescription>
-            Ask ZenoCode to change the copy, layout, colors, auth flow, or dashboard modules.
-          </CardDescription>
+          <CardTitle>{t('preview.editTitle')}</CardTitle>
+          <CardDescription>{t('preview.editSubtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="preview-welcome-steps">
           <div>
             <Code2 size={18} />
-            <span>Edit src/app/page.tsx to change this first screen.</span>
+            <span>{t('preview.steps.home')}</span>
           </div>
           <div>
             <Code2 size={18} />
-            <span>Open /login to test the Flowless authentication flow.</span>
+            <span>{t('preview.steps.auth')}</span>
           </div>
           <div>
             <Code2 size={18} />
-            <span>Update src/lib/pubflow-config.ts or environment variables for branding and API URLs.</span>
+            <span>{t('preview.steps.config')}</span>
           </div>
         </CardContent>
       </Card>

@@ -1,8 +1,8 @@
 'use client';
 
+import { PubflowProvider } from '@pubflow/react';
 import { I18nextProvider } from 'react-i18next';
-import { usePathname } from 'next/navigation';
-import { Suspense, createContext, lazy, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { PubflowInstanceConfig } from '@pubflow/core';
 import { i18n } from '@/lib/i18n';
 import { isPreviewPathname, isPreviewRuntime, PUBFLOW_CONFIG } from '@/lib/pubflow-config';
@@ -24,13 +24,7 @@ function configuredTheme(): ThemeMode {
   return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
 }
 
-const LazyPubflowProvider = lazy(async () => {
-  const mod = await import('@pubflow/react');
-  return { default: mod.PubflowProvider };
-});
-
 export function Providers({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
   // Keep SSR and the first client render identical. Runtime markers, frame
   // state and isolated preferences are deliberately read only after mount.
   const [theme, setTheme] = useState<ThemeMode>(configuredTheme);
@@ -75,28 +69,9 @@ export function Providers({ children }: { children: ReactNode }) {
     return { 'X-Bridge-Secret': PUBFLOW_CONFIG.BRIDGE_SECRET };
   }, []);
 
-  const themedChildren = (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-
-  const appPathname = (pathname || '/')
-    .replace(/^\/(?:__preview__|__virtual__)\/[^/]+\/\d+(?=\/|$)/, '') || '/';
-  const canSkipAuthProvider = previewRuntime && appPathname === '/';
-
-  if (canSkipAuthProvider) {
-    return (
-      <I18nextProvider i18n={i18n}>
-        {themedChildren}
-      </I18nextProvider>
-    );
-  }
-
   return (
     <I18nextProvider i18n={i18n}>
-      <Suspense fallback={themedChildren}>
-        <LazyPubflowProvider
+      <PubflowProvider
         config={{
           id: 'default',
           baseUrl: PUBFLOW_CONFIG.API_BASE_URL,
@@ -110,9 +85,10 @@ export function Providers({ children }: { children: ReactNode }) {
         persistentCache={{ enabled: PUBFLOW_CONFIG.ENABLE_PERSISTENT_CACHE }}
         theme={themeContext}
       >
-        {themedChildren}
-        </LazyPubflowProvider>
-      </Suspense>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+          {children}
+        </ThemeContext.Provider>
+      </PubflowProvider>
     </I18nextProvider>
   );
 }
