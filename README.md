@@ -36,7 +36,6 @@ NEXT_PUBLIC_DEFAULT_THEME=system
 NEXT_PUBLIC_DEFAULT_LANGUAGE=en
 NEXT_PUBLIC_ENABLE_ACCOUNT_CREATION=true
 NEXT_PUBLIC_ENABLE_PASSWORD_RESET=true
-NEXT_PUBLIC_PREVIEW_MODE=false
 ```
 
 ```env
@@ -59,11 +58,11 @@ npm run build:deno  # Deno Deploy build check
 
 Cloudflare/OpenNext builds should use the normal npm or Bun install layout. If Windows reports `EPERM` while creating symlinks under `node_modules\.deno`, rebuild from a clean npm/Bun install, enable Developer Mode/elevated symlinks, or run the Cloudflare build in WSL/Linux. The Deno deploy path remains separate via `npm run build:deno`.
 
-## Coding preview mode
+## Home welcome screen
 
-Set `NEXT_PUBLIC_PREVIEW_MODE=true` only inside Pubflow's Coding Agent/browser preview. The home route will show a friendly "Welcome to your Pubflow App" screen with links to login and dashboard. Leave it unset or `false` in production to keep the normal auth redirect.
+`/` always shows the home welcome (`src/components/home-welcome.tsx`). Edit copy in `src/locales/*/common.json` under `home.welcome`. Login and dashboard stay available via CTAs; protected routes still require auth.
 
-In the Pubflow console, Nodepod injects preview flags automatically (`NEXT_PUBLIC_PREVIEW_MODE`, `window.__PUBFLOW_PREVIEW__`, and transport paths like `/__preview__/pod…/3000/` or `/preview/pod…`). The starter detects those at runtime so the welcome screen appears even when build-time env has not inlined yet.
+When embedded in Pubflow's Nodepod iframe, runtime helpers (`previewAwareHref`, `isEmbeddedPreviewRuntime`) keep navigations under `/__preview__/pod…` so absolute `/login` links do not escape into the host console.
 
 ### Applying starter fixes to an existing OctoBox workspace
 
@@ -87,7 +86,7 @@ export { GET } from '@scelar/nodepod/next';
 
 ## Routes
 
-- `/` shows the preview welcome in Nodepod/coding-agent preview (runtime detection or `NEXT_PUBLIC_PREVIEW_MODE=true`); otherwise it checks auth state and routes to `/dashboard` or `/login`.
+- `/` always shows the home welcome screen; use the CTAs for `/login` and `/dashboard`.
 - `/login` uses `@pubflow/react` `LoginForm`; OTP appears automatically when Flowless returns `requires2fa`.
 - `/register` uses `AccountCreationForm`; the login link is controlled by `NEXT_PUBLIC_ENABLE_ACCOUNT_CREATION`.
 - `/forgot-password` and `/reset-password` use `PasswordResetForm`; the login link is controlled by `NEXT_PUBLIC_ENABLE_PASSWORD_RESET`.

@@ -1,7 +1,3 @@
-function isEnabled(value?: string): boolean {
-  return /^(true|1|yes|on)$/i.test(String(value || '').trim().replace(/^['"]|['"]$/g, ''));
-}
-
 function parseList(value?: string): string[] {
   return String(value || '')
     .split(',')
@@ -29,9 +25,6 @@ export const PUBFLOW_CONFIG = {
   ENABLE_DEBUG_TOOLS: process.env.NEXT_PUBLIC_ENABLE_DEBUG_TOOLS === 'true',
   SHOW_SESSION_ALERTS: process.env.NEXT_PUBLIC_SHOW_SESSION_ALERTS === 'true',
   ENABLE_PERSISTENT_CACHE: process.env.NEXT_PUBLIC_ENABLE_PERSISTENT_CACHE !== 'false',
-  PREVIEW_MODE:
-    isEnabled(process.env.NEXT_PUBLIC_PREVIEW_MODE) ||
-    isEnabled(process.env.NEXT_PUBLIC_PUBFLOW_WEB_PREVIEW),
   DEFAULT_LANGUAGE: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en',
 };
 
@@ -96,7 +89,6 @@ export function hasPreviewRuntimeMarker(): boolean {
 
 /** True inside Nodepod / coding-agent iframe (path-prefixed same-origin preview). */
 export function isEmbeddedPreviewRuntime(): boolean {
-  if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
   if (typeof window === 'undefined') return false;
 
   if (hasPreviewRuntimeMarker()) return true;
@@ -126,9 +118,9 @@ export function isEmbeddedPreviewRuntime(): boolean {
   return false;
 }
 
-/** Build-time or runtime coding-agent / Nodepod preview (use for routing + theme). */
+/** Runtime coding-agent / Nodepod preview (use for theme + iframe-safe navigation). */
 export function isPreviewRuntime(): boolean {
-  return PUBFLOW_CONFIG.PREVIEW_MODE || isEmbeddedPreviewRuntime();
+  return isEmbeddedPreviewRuntime();
 }
 
 /**

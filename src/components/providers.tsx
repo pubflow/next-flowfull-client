@@ -10,7 +10,6 @@ import { isPreviewPathname, isPreviewRuntime, PUBFLOW_CONFIG } from '@/lib/pubfl
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 function resolvePreviewThemeContext(): boolean {
-  if (PUBFLOW_CONFIG.PREVIEW_MODE) return true;
   if (typeof window === 'undefined') return false;
   return isPreviewRuntime() || isPreviewPathname(window.location.pathname);
 }
@@ -20,7 +19,7 @@ function themeStorageKey(previewRuntime: boolean): string {
 }
 
 function configuredTheme(): ThemeMode {
-  const value = PUBFLOW_CONFIG.PREVIEW_MODE ? 'dark' : PUBFLOW_CONFIG.DEFAULT_THEME;
+  const value = PUBFLOW_CONFIG.DEFAULT_THEME;
   return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
 }
 
@@ -28,7 +27,7 @@ export function Providers({ children }: { children: ReactNode }) {
   // Keep SSR and the first client render identical. Runtime markers, frame
   // state and isolated preferences are deliberately read only after mount.
   const [theme, setTheme] = useState<ThemeMode>(configuredTheme);
-  const [previewRuntime, setPreviewRuntime] = useState(PUBFLOW_CONFIG.PREVIEW_MODE);
+  const [previewRuntime, setPreviewRuntime] = useState(false);
   const [preferencesMounted, setPreferencesMounted] = useState(false);
 
   useEffect(() => {

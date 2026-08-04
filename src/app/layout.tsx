@@ -19,7 +19,8 @@ export const viewport: Viewport = {
 	initialScale: 1,
 };
 
-const PREVIEW_THEME_BOOT_SCRIPT = `(function(){try{var p=location.pathname,s=location.search;if(${PUBFLOW_CONFIG.PREVIEW_MODE ? "true" : "false"}||window.__PUBFLOW_PREVIEW__||/(?:__preview__|__virtual__)/.test(p)||/^\\/preview\\/pod[^/]+/i.test(p)||/[?&]pubflowPreview=1(?:&|$)/.test(s)){window.__PUBFLOW_PREVIEW__=true;var r=document.documentElement;r.classList.add("dark");r.dataset.theme="dark";r.style.colorScheme="dark";}}catch(e){}})();`;
+// Nodepod iframe: force dark early when framed under preview transport paths.
+const PREVIEW_THEME_BOOT_SCRIPT = `(function(){try{var p=location.pathname,s=location.search;if(window.__PUBFLOW_PREVIEW__||/(?:__preview__|__virtual__)/.test(p)||/^\\/preview\\/pod[^/]+/i.test(p)||/[?&]pubflowPreview=1(?:&|$)/.test(s)){window.__PUBFLOW_PREVIEW__=true;var r=document.documentElement;r.classList.add("dark");r.dataset.theme="dark";r.style.colorScheme="dark";}}catch(e){}})();`;
 
 export default function RootLayout({
 	children,
@@ -29,33 +30,26 @@ export default function RootLayout({
 	// Avoid next/font (/__nextjs_font + /_next/static/media): Nodepod serves the
 	// app under /__preview__/pod…/port, and absolute font URLs escape that prefix
 	// or get blocked by Next 16 cross-origin guards. Google Fonts CDN works.
-	const previewDark = PUBFLOW_CONFIG.PREVIEW_MODE;
 
 	return (
 		<html
 			lang="en"
-			className={cn("font-sans", previewDark && "dark")}
-			data-theme={previewDark ? "dark" : undefined}
-			style={previewDark ? { colorScheme: "dark" } : undefined}
+			className={cn("font-sans")}
 			suppressHydrationWarning
 		>
 			<head>
 				<script dangerouslySetInnerHTML={{ __html: PREVIEW_THEME_BOOT_SCRIPT }} />
-				{!previewDark ? (
-					<>
-						<link rel="preconnect" href="https://fonts.googleapis.com" />
-						<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-						<link
-							href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-							rel="stylesheet"
-						/>
-					</>
-				) : null}
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link
+					href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+					rel="stylesheet"
+				/>
 				<link rel="icon" href="/Pubflow-Favicon.png" type="image/png" />
 				<link rel="apple-touch-icon" href="/Pubflow-Favicon.png" />
 			</head>
 			<body className="antialiased">
-				{previewDark ? children : <Providers>{children}</Providers>}
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);
